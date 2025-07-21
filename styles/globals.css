@@ -1,0 +1,237 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: system-ui, sans-serif;
+  }
+  
+  body {
+    @apply bg-discord-gradient min-h-screen;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-lg border border-white/10 rounded-lg;
+  }
+  
+  .glass-button {
+    @apply bg-white/10 hover:bg-white/20 backdrop-blur-lg border border-white/10 rounded-lg transition-all duration-200;
+  }
+  
+  .discord-button {
+    @apply bg-discord-primary hover:bg-discord-primary/90 text-white rounded-lg transition-colors duration-200;
+  }
+  
+  .stat-card {
+    @apply glass-card p-6 hover:bg-white/20 transition-all duration-300 hover:scale-105;
+  }
+  
+  .chart-container {
+    @apply glass-card p-6;
+  }
+  
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-gray-300 border-t-white;
+  }
+  
+  .nav-link {
+    @apply text-white/90 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors;
+  }
+  
+  .table-row {
+    @apply border-b border-white/10 hover:bg-white/5 transition-colors;
+  }
+  
+  .badge {
+    @apply px-2 py-1 text-xs font-medium rounded-full;
+  }
+  
+  .badge-success {
+    @apply bg-green-500 text-white;
+  }
+  
+  .badge-warning {
+    @apply bg-yellow-500 text-black;
+  }
+  
+  .badge-danger {
+    @apply bg-red-500 text-white;
+  }
+  
+  .badge-info {
+    @apply bg-blue-500 text-white;
+  }
+  
+  .badge-default {
+    @apply bg-gray-500 text-white;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .backdrop-blur-xs {
+    backdrop-filter: blur(2px);
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-discord-primary to-discord-secondary bg-clip-text text-transparent;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+  
+  .animate-bounce-gentle {
+    animation: bounceGentle 2s infinite;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceGentle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Custom focus styles */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-discord-primary focus:ring-offset-2 focus:ring-offset-transparent;
+}
+
+/* Discord-specific styles */
+.discord-embed {
+  @apply bg-gray-800 border-l-4 border-discord-primary p-4 rounded-r-lg;
+}
+
+.discord-avatar {
+  @apply w-8 h-8 rounded-full border-2 border-white/20;
+}
+
+.discord-status-online {
+  @apply bg-green-500;
+}
+
+.discord-status-away {
+  @apply bg-yellow-500;
+}
+
+.discord-status-busy {
+  @apply bg-red-500;
+}
+
+.discord-status-offline {
+  @apply bg-gray-500;
+}
+
+/* Chart.js theme overrides */
+.chart-container canvas {
+  @apply rounded-lg;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .mobile-padding {
+    @apply px-4 py-2;
+  }
+  
+  .mobile-text {
+    @apply text-sm;
+  }
+  
+  .mobile-hidden {
+    @apply hidden;
+  }
+}
+
+/* Dark mode compatibility */
+@media (prefers-color-scheme: dark) {
+  .auto-dark {
+    @apply bg-gray-900 text-white;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-friendly {
+    @apply bg-white text-black;
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .glass-card {
+    @apply bg-black/80 border-white;
+  }
+  
+  .nav-link {
+    @apply text-white;
+  }
+}
