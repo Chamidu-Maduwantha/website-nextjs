@@ -19,7 +19,12 @@ export const authOptions: AuthOptions = {
       if (token.sub) {
         session.user.id = token.sub;
         session.user.isAdmin = await isAdmin(token.sub);
+        
+        // Ensure we have name from token (Discord username)
+        if (token.name) session.user.name = token.name as string;
+        
         console.log('Session callback - User ID:', token.sub);
+        console.log('Session callback - Name:', session.user.name);
         console.log('Session callback - Is admin:', session.user.isAdmin);
       }
       
@@ -29,6 +34,14 @@ export const authOptions: AuthOptions = {
       if (account && profile) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
+        
+        // Store Discord username in token
+        const discordProfile = profile as any; // Discord profile type
+        if (discordProfile.username) {
+          token.name = discordProfile.username;
+        }
+        
+        console.log('JWT callback - Profile username:', discordProfile.username);
       }
       return token;
     },

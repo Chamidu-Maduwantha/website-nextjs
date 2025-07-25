@@ -44,14 +44,14 @@ export default function Home() {
   ];
 
   const commands = [
-    { command: '!play [song/url]', description: 'Play music from YouTube or playlists' },
-    { command: '!skip', description: 'Skip current song' },
-    { command: '!pause', description: 'Pause current song' },
-    { command: '!resume', description: 'Resume paused song' },
-    { command: '!queue', description: 'Show current queue' },
-    { command: '!volume [1-100]', description: 'Adjust volume' },
-    { command: '!nowplaying', description: 'Show current song info' },
-    { command: '!shuffle', description: 'Shuffle the queue' },
+    { command: ',play [song/url]', description: 'Play music from YouTube or playlists' },
+    { command: ',skip', description: 'Skip current song' },
+    { command: ',pause', description: 'Pause current song' },
+    { command: ',resume', description: 'Resume paused song' },
+    { command: ',queue', description: 'Show current queue' },
+    { command: ',volume [1-100]', description: 'Adjust volume' },
+    { command: ',nowplaying', description: 'Show current song info' },
+    { command: ',shuffle', description: 'Shuffle the queue' },
   ];
 
   return (
@@ -167,7 +167,7 @@ export default function Home() {
                 <div>
                   <h3 className="text-white font-medium">Start Playing</h3>
                   <p className="text-white/70">
-                    Use <code className="text-blue-400">!play</code> to start playing music
+                    Use <code className="text-blue-400">,play</code> to start playing music
                   </p>
                 </div>
               </div>

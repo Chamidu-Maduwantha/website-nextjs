@@ -284,7 +284,7 @@ export default function CustomCommands({ isPremium = false }: CustomCommandsProp
                 Command Name
               </label>
               <div className="flex items-center space-x-2">
-                <span className="text-white/60">!</span>
+                <span className="text-white/60">,</span>
                 <input
                   type="text"
                   value={formData.commandName}
@@ -297,7 +297,7 @@ export default function CustomCommands({ isPremium = false }: CustomCommandsProp
                 />
               </div>
               <p className="text-xs text-white/50 mt-1">
-                Only letters, numbers, and underscores. Users will type !{formData.commandName || 'commandname'}
+                Only letters, numbers, and underscores. Users will type ,{formData.commandName || 'commandname'}
               </p>
             </div>
 
@@ -418,7 +418,7 @@ export default function CustomCommands({ isPremium = false }: CustomCommandsProp
               <div className="flex items-start justify-between mb-3">
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-1">
-                    <span className="font-mono text-purple-400 font-bold">!{command.displayName}</span>
+                    <span className="font-mono text-purple-400 font-bold">,{command.displayName}</span>
                     <PlayIcon className="h-4 w-4 text-green-400" />
                   </div>
                   {command.description && (
@@ -477,7 +477,7 @@ export default function CustomCommands({ isPremium = false }: CustomCommandsProp
         onClose={() => setDeleteModal({ isOpen: false, commandId: '', commandName: '' })}
         onConfirm={confirmDelete}
         title="Delete Custom Command"
-        message={`Are you sure you want to delete the command '!${deleteModal.commandName}'? This action cannot be undone.`}
+        message={`Are you sure you want to delete the command ',${deleteModal.commandName}'? This action cannot be undone.`}
         confirmText="Delete"
         cancelText="Cancel"
         type="danger"

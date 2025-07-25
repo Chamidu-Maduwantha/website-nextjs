@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
 import { Bar, Doughnut } from 'react-chartjs-2';
-import { MusicalNoteIcon, ClockIcon, UsersIcon, CommandLineIcon } from '@heroicons/react/24/outline';
+import { MusicalNoteIcon, ClockIcon, UsersIcon, CommandLineIcon, PlayIcon } from '@heroicons/react/24/outline';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, ArcElement);
 
@@ -209,49 +209,86 @@ export default function ServerMusicStats({ serverId }: ServerMusicStatsProps) {
 
         {/* Top Users */}
         <div className="bg-white/5 rounded-lg p-4 mb-6">
-          <h4 className="text-white font-medium mb-3">Top Listeners</h4>
-          <div className="space-y-2">
+          <h4 className="text-white font-medium mb-3">🎧 Top Listeners</h4>
+          <div className="space-y-3">
             {stats.topUsers.slice(0, 5).map((user, index) => (
-              <div key={index} className="flex items-center justify-between p-2 bg-white/5 rounded">
+              <div key={index} className="flex items-center justify-between p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
                 <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    {index + 1}
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm ${
+                    index === 0 ? 'bg-gradient-to-r from-yellow-400 to-orange-500' :
+                    index === 1 ? 'bg-gradient-to-r from-gray-300 to-gray-500' :
+                    index === 2 ? 'bg-gradient-to-r from-orange-400 to-red-500' :
+                    'bg-gradient-to-r from-blue-500 to-purple-500'
+                  }`}>
+                    {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
                   </div>
                   {user.avatar ? (
-                    <img src={user.avatar} alt={user.username} className="w-8 h-8 rounded-full" />
+                    <img src={user.avatar} alt={user.username} className="w-10 h-10 rounded-full border-2 border-white/20" />
                   ) : (
-                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                      <UsersIcon className="h-4 w-4 text-white/60" />
+                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold">{user.username.charAt(0).toUpperCase()}</span>
                     </div>
                   )}
-                  <span className="text-white">{user.username}</span>
+                  <div>
+                    <span className="text-white font-medium">{user.username}</span>
+                    <div className="text-white/60 text-xs">Music enthusiast</div>
+                  </div>
                 </div>
-                <span className="text-white/60 text-sm">{user.songsPlayed} songs</span>
+                <div className="text-right">
+                  <div className="text-white font-semibold">{user.songsPlayed}</div>
+                  <div className="text-white/60 text-xs">songs played</div>
+                </div>
               </div>
             ))}
+            {stats.topUsers.length === 0 && (
+              <div className="text-center py-8 text-white/60">
+                <MusicalNoteIcon className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                <p>No listeners yet. Be the first to play some music! 🎵</p>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Recent Songs */}
         <div className="bg-white/5 rounded-lg p-4">
-          <h4 className="text-white font-medium mb-3">Recently Played</h4>
-          <div className="space-y-2 max-h-48 overflow-y-auto">
+          <h4 className="text-white font-medium mb-3">🎵 Recently Played</h4>
+          <div className="space-y-3 max-h-64 overflow-y-auto custom-scrollbar">
             {stats.recentSongs.map((song, index) => (
-              <div key={index} className="flex items-center space-x-3 p-2 bg-white/5 rounded">
-                <img 
-                  src={song.thumbnail} 
-                  alt={song.title}
-                  className="w-10 h-10 rounded object-cover"
-                />
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm truncate">{song.title}</p>
-                  <p className="text-white/60 text-xs truncate">{song.artist}</p>
+              <div key={index} className="flex items-center space-x-3 p-3 bg-white/5 rounded-lg hover:bg-white/10 transition-colors">
+                <div className="relative">
+                  <img 
+                    src={song.thumbnail} 
+                    alt={song.title}
+                    className="w-12 h-12 rounded-lg object-cover border border-white/20"
+                  />
+                  <div className="absolute inset-0 bg-black/20 rounded-lg flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                    <PlayIcon className="h-4 w-4 text-white" />
+                  </div>
                 </div>
-                <span className="text-white/40 text-xs">
-                  {new Date(song.playedAt).toLocaleDateString()}
-                </span>
+                <div className="flex-1 min-w-0">
+                  <p className="text-white font-medium text-sm truncate">{song.title}</p>
+                  <p className="text-white/60 text-xs truncate">by {song.artist}</p>
+                  <div className="flex items-center space-x-2 mt-1">
+                    <span className="text-white/40 text-xs">
+                      {new Date(song.playedAt).toLocaleDateString()}
+                    </span>
+                    <span className="text-white/40 text-xs">•</span>
+                    <span className="text-white/40 text-xs">
+                      {new Date(song.playedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  </div>
+                </div>
+                <div className="text-white/40">
+                  <ClockIcon className="h-4 w-4" />
+                </div>
               </div>
             ))}
+            {stats.recentSongs.length === 0 && (
+              <div className="text-center py-8 text-white/60">
+                <MusicalNoteIcon className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                <p>No recent activity. Start playing some music! 🎶</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -9,12 +9,10 @@ import PremiumBadge from '../components/PremiumBadge';
 import CustomCommands from '../components/CustomCommands';
 import BotStatus from '../components/BotStatus';
 import MaintenanceToggle from '../components/MaintenanceToggle';
-import MusicControls from '../components/MusicControls';
 import MusicSearch from '../components/MusicSearch';
 import ServerMusicStats from '../components/ServerMusicStats';
 import ServerSettings from '../components/ServerSettings';
 import UserMusicActivity from '../components/UserMusicActivity';
-import QuickCommands from '../components/QuickCommands';
 
 
 interface DashboardStats {
@@ -179,14 +177,31 @@ export default function Dashboard() {
             {/* Bot Status - Full Width */}
             <BotStatus />
             
+            {/* Refresh Button */}
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-bold text-white">Dashboard Overview</h2>
+              <button
+                onClick={refreshData}
+                className="bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 px-4 py-2 rounded-lg border border-blue-500/30 transition-colors flex items-center space-x-2"
+                disabled={loading}
+              >
+                <span className={loading ? "animate-spin" : ""}>🔄</span>
+                <span>{loading ? 'Refreshing...' : 'Refresh Data'}</span>
+              </button>
+            </div>
+            
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white/10 backdrop-blur-lg rounded-lg p-6 border border-white/10">
+              <div className="bg-white/10 backdrop-blur-lg rounded-lg p-6 border border-white/10 hover:bg-white/15 transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-white/60 text-sm font-medium">Total Servers</p>
                     <p className="text-3xl font-bold text-white">
-                      {stats?.totalServers || 0}
+                      {loading ? (
+                        <span className="animate-pulse">...</span>
+                      ) : (
+                        stats?.totalServers || 0
+                      )}
                     </p>
                   </div>
                   <div className="p-3 rounded-full bg-blue-500/20">
@@ -195,12 +210,16 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="bg-white/10 backdrop-blur-lg rounded-lg p-6 border border-white/10">
+              <div className="bg-white/10 backdrop-blur-lg rounded-lg p-6 border border-white/10 hover:bg-white/15 transition-all duration-300">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-white/60 text-sm font-medium">Total Users</p>
                     <p className="text-3xl font-bold text-white">
-                      {stats?.totalUsers || 0}
+                      {loading ? (
+                        <span className="animate-pulse">...</span>
+                      ) : (
+                        stats?.totalUsers || 0
+                      )}
                     </p>
                   </div>
                   <div className="p-3 rounded-full bg-green-500/20">
@@ -209,33 +228,9 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="bg-white/10 backdrop-blur-lg rounded-lg p-6 border border-white/10">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/60 text-sm font-medium">Commands Used</p>
-                    <p className="text-3xl font-bold text-white">
-                      {stats?.totalCommands || 0}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-full bg-purple-500/20">
-                    <span className="text-2xl">⚡</span>
-                  </div>
-                </div>
-              </div>
+             
 
-              <div className="bg-white/10 backdrop-blur-lg rounded-lg p-6 border border-white/10">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-white/60 text-sm font-medium">Songs Played</p>
-                    <p className="text-3xl font-bold text-white">
-                      {stats?.totalSongs || 0}
-                    </p>
-                  </div>
-                  <div className="p-3 rounded-full bg-yellow-500/20">
-                    <span className="text-2xl">🎵</span>
-                  </div>
-                </div>
-              </div>
+            
             </div>
 
             {/* Quick Overview */}
@@ -243,9 +238,13 @@ export default function Dashboard() {
               <h3 className="text-xl font-semibold text-white mb-4">Quick Overview</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <h4 className="text-white/80 font-medium mb-2">Recent Activity</h4>
+                  <h4 className="text-white/80 font-medium mb-2">Bot Status</h4>
+                  <div className="flex items-center space-x-2 mb-3">
+                    <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-green-400 font-medium">Online & Active</span>
+                  </div>
                   <p className="text-white/60 text-sm">
-                    Your servers have been active with music playback and commands.
+                    Your music bot is running smoothly across {stats?.totalServers || 0} servers with {stats?.totalUsers || 0} users.
                   </p>
                 </div>
                 <div>
@@ -299,12 +298,6 @@ export default function Dashboard() {
                     <div className="text-3xl mb-2">❤️</div>
                     <h4 className="text-white font-medium mb-2">Personal Favorites</h4>
                     <p className="text-white/60 text-sm">Save your favorite songs and access them anytime. Build your personal music collection and play them instantly!</p>
-                  </div>
-                  
-                  <div className="bg-white/5 rounded-lg p-4">
-                    <div className="text-3xl mb-2">⚡</div>
-                    <h4 className="text-white font-medium mb-2">Quick Commands</h4>
-                    <p className="text-white/60 text-sm">Use quick action buttons for common commands or send custom commands directly from the web interface.</p>
                   </div>
                   
                   <div className="bg-white/5 rounded-lg p-4">
@@ -365,8 +358,6 @@ export default function Dashboard() {
                 {/* Server Music Controls and Stats */}
                 <div className="grid lg:grid-cols-2 gap-6">
                   <div className="space-y-6">
-                    <MusicControls serverId={selectedServerId} />
-                    <QuickCommands serverId={selectedServerId} />
                     <MusicSearch serverId={selectedServerId} />
                   </div>
                   <div className="space-y-6">
@@ -434,7 +425,7 @@ export default function Dashboard() {
 
       case 'admin':
         return isAdmin ? (
-          <div>
+          <div className="space-y-6">
             <PremiumUserManagement />
           </div>
         ) : null;

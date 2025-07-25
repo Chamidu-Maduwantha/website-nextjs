@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import AdminBadge from '../components/AdminBadge';
+import PM2Control from '../components/PM2Control';
 
 interface AdminStats {
   totalServers: number;
@@ -158,6 +159,16 @@ export default function AdminPage({ initialStats }: AdminPageProps) {
                 Overview
               </button>
               <button
+                onClick={() => setActiveTab('control')}
+                className={`px-4 py-2 rounded-md transition-colors duration-200 ${
+                  activeTab === 'control' 
+                    ? 'bg-discord-primary text-white' 
+                    : 'bg-discord-dark text-white/70 hover:text-white'
+                }`}
+              >
+                Bot Control
+              </button>
+              <button
                 onClick={() => setActiveTab('guilds')}
                 className={`px-4 py-2 rounded-md transition-colors duration-200 ${
                   activeTab === 'guilds' 
@@ -196,6 +207,16 @@ export default function AdminPage({ initialStats }: AdminPageProps) {
                 <p className="text-white/70">
                   Bot is running smoothly across {stats.totalServers} servers with {stats.totalUsers} users.
                 </p>
+              </div>
+            )}
+
+            {activeTab === 'control' && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-white">Bot Control Panel</h3>
+                <p className="text-white/70 mb-4">
+                  Manage the bot process, view logs, and control bot operations.
+                </p>
+                <PM2Control />
               </div>
             )}
 
