@@ -119,7 +119,8 @@ export default function BotStatus() {
                 </p>
               </div>
               <p className="text-orange-300/80 text-xs mt-1">
-                Only admins and developers can use commands
+                 We are performing updates Please try again later
+                will be available soon
               </p>
             </div>
           )}
